@@ -50,7 +50,7 @@ public class BattleMap {
 
     private void setArea(int x, int y) {
         if (getOnceShip(x + 1, y) == null)
-            //area = new Area();
+            area = new Area();
             shipsOnMap[x+1][y] = new Area();
     }
 
