@@ -11,7 +11,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter coordinates of first SingleDesk ship:");
         player1.addSingleDeckShip(scanner.nextLine());
-        player1.addSingleDeckShip(scanner.nextLine());
+        //player1.addSingleDeckShip(scanner.nextLine());
        // player1.addDoubleDeckShip(scanner.nextLine());
         //player1.addSingleDeckShip(2,2);
        // player1.addSingleDeckShip(3,3);
@@ -19,10 +19,11 @@ public class Main {
         //player1.addSingleDeckShip(4,4);
 
         System.out.println(player1.getOnceShip(0,0));
-        System.out.println(player1.getOnceShip(1,1));
-        System.out.println(player1.getOnceShip(2,2));
-        System.out.println(player1.getOnceShip(3,3));
-        System.out.println(player1.getOnceShip(4,4));
+        System.out.println(player1.getOnceShip(1,0));
+//        System.out.println(player1.getOnceShip(1,1));
+//        System.out.println(player1.getOnceShip(2,2));
+//        System.out.println(player1.getOnceShip(3,3));
+//        System.out.println(player1.getOnceShip(4,4));
         //System.out.println(Arrays.toString(battleMap.getShipsOnMap()));
     }
 }

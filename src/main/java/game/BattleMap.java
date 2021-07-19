@@ -27,6 +27,7 @@ public class BattleMap {
 
     public void setOnceShip(int x, int y) {
         shipsOnMap[x][y] = new SingleDeckShip();
+        setArea(x, y);
     }
 
     public void setDoubleShip(int x, int y, int x1, int y1) {
@@ -47,8 +48,9 @@ public class BattleMap {
         setOnceShip(x3, y3);
     }
 
-    public void setArea(int x, int y) {
+    private void setArea(int x, int y) {
         if (getOnceShip(x + 1, y) == null)
+            //area = new Area();
             shipsOnMap[x+1][y] = new Area();
     }
 
