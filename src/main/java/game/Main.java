@@ -22,6 +22,10 @@ public class Main {
         //System.out.println(player1.getOnceShip(1,0));
         //System.out.println(player1.getOnceShip(0,1));
         //System.out.println(player1.getOnceShip(1,1));
+        System.out.println(player1.getOnceShip(0,0));
+        System.out.println(player1.getOnceShip(1,0));
+        System.out.println(player1.getOnceShip(0,1));
+        System.out.println(player1.getOnceShip(1,1));
         System.out.println("Single " + player1.getOnceShip(1,1));
         System.out.println("x, y+1 " + player1.getOnceShip(1,2));
         System.out.println("x-1, y+1 " + player1.getOnceShip(0,2));
