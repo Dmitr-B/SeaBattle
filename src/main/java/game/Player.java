@@ -3,6 +3,7 @@ package game;
 import dto.*;
 
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,18 +29,73 @@ public class Player {
 //        }
 //    }
 
-    public void addSingleDeckShip(String coordinates) {
+    public void addSingleDeckShip(String coordinates, Scanner scanner) {
         String[] data = coordinates.split(",");
         System.out.println(isValidInput(coordinates));
         System.out.println(isValidNumberOfCoordinates(coordinates));
         //System.out.println(isValidDoubleDeckShip(coordinates));
-        System.out.println("Empty " + isEmptyPlace(coordinates));
+        //System.out.println("Empty " + isEmptyPlace(coordinates));
+
+        if (!isValidInput(coordinates)) {
+            System.out.println("Invalid input data. Please enter coordinates again:");
+            addSingleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (!isValidNumberOfCoordinates(coordinates)) {
+            System.out.println("Invalid number of coordinates. You must enter: x,y");
+            addSingleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (isValidInput(coordinates) && isValidNumberOfCoordinates(coordinates) && !isEmptyPlace(coordinates)) {
+            System.out.println("The place is not empty. Enter new coordinates:");
+            addSingleDeckShip(scanner.nextLine(), scanner);
+        }
 
 
-        if (SingleDeckShip.getCounter() < 4) {
-            battleMap.setOnceShip(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
-        } else {
+        if (SingleDeckShip.getCounter() < 4 && isValidInput(coordinates) && isValidNumberOfCoordinates(coordinates) && isEmptyPlace(coordinates)) {
+            battleMap.setOnceShip(getIntVal(data[0]), getIntVal(data[1]));
+        }
+
+        if (SingleDeckShip.getCounter() > 4)
             System.out.println("На поле максимальное количество однопалубных кораблей");
+
+        //System.out.println("Valid " + isValidDoubleDeckShip(coordinates));
+    }
+
+    public void addDoubleDeckShip(String coordinates, Scanner scanner) {
+        String[] data = getDataFromShip(coordinates);
+
+        if (!isValidDoubleInput(coordinates)) {
+            System.out.println("Invalid input data. Please enter coordinates again:");
+            addDoubleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (!isValidNumberOfDoubleCoordinates(coordinates) && isValidDoubleInput(coordinates)) {
+            System.out.println("Invalid number of coordinates. You must enter: x,y;x1,y1");
+            addDoubleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (!isValidDoubleDeckShip(coordinates) && isValidNumberOfDoubleCoordinates(coordinates) && isValidDoubleInput(coordinates)) {
+            System.out.println("Invalid DoubleDeckShip. Enter vertical or horizontal coordinates");
+            addDoubleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (!isEmptyDoublePlace(coordinates) && isValidDoubleDeckShip(coordinates) && isValidNumberOfDoubleCoordinates(coordinates) &&
+                isValidDoubleInput(coordinates)) {
+            System.out.println("The place is not empty. Enter new coordinates:");
+            addDoubleDeckShip(scanner.nextLine(), scanner);
+        }
+
+        if (DoubleDeckShip.getCounter() < 3 && isValidDoubleInput(coordinates) && isValidNumberOfDoubleCoordinates(coordinates) &&
+        isValidDoubleDeckShip(coordinates)) {
+            battleMap.setDoubleShip(getIntVal(data[0]), getIntVal(data[1]),
+                    getIntVal(data[2]), getIntVal(data[3]));
+        }
+
+
+
+        if (DoubleDeckShip.getCounter() > 3) {
+            System.out.println("На поле максимальное количество двупалубных кораблей");
         }
         //System.out.println("Valid " + isValidDoubleDeckShip(coordinates));
     }
@@ -60,10 +116,24 @@ public class Player {
         return matcher.find();
     }
 
+    public boolean isValidDoubleInput(String input) {
+        String patternRegex = "^[0-9],[0-9];[0-9],+[0-9]";
+        Pattern pattern = Pattern.compile(patternRegex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
+    }
+
     public boolean isValidNumberOfCoordinates(String input) {
         String[] data = input.split(";");
 
         return data.length == 1;
+    }
+
+    public boolean isValidNumberOfDoubleCoordinates(String input) {
+        String[] data = input.split(";");
+        System.out.println(data.length);
+
+        return data.length == 2;
     }
 
 
@@ -74,6 +144,10 @@ public class Player {
 
         System.out.println("suck" + Arrays.toString(data));
         System.out.println(getOnceShip(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
+
+        if ((getIntVal(data[2]) != getIntVal(data[0]))  &&
+                (getIntVal(data[3]) != getIntVal(data[1])))
+            return false;
 
         return Integer.parseInt(data[2]) == firstX + 1 || Integer.parseInt(data[3]) == firstY + 1 ||
                 Integer.parseInt(data[2]) == firstX - 1 || Integer.parseInt(data[3]) == firstY - 1;
@@ -87,6 +161,10 @@ public class Player {
         System.out.println("suck" + Arrays.toString(data));
         System.out.println("x+2" + (Integer.parseInt(data[4]) == firstX - 2));
         System.out.println(getOnceShip(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
+
+        if ((getIntVal(data[2]) != getIntVal(data[0]) || getIntVal(data[4]) != getIntVal(data[0]))  &&
+                (getIntVal(data[3]) != getIntVal(data[1]) || getIntVal(data[5]) != getIntVal(data[1])))
+            return false;
 
         return (Integer.parseInt(data[2]) == firstX + 1 || Integer.parseInt(data[3]) == firstY + 1 ||
                 Integer.parseInt(data[2]) == firstX - 1 || Integer.parseInt(data[3]) == firstY - 1) &&
@@ -102,8 +180,11 @@ public class Player {
         System.out.println("suck" + Arrays.toString(data));
         System.out.println(getOnceShip(Integer.parseInt(data[0]), Integer.parseInt(data[1])));
 
-        if (getIntVal(data[2]) == getIntVal(data[3]) || getIntVal(data[4]) == getIntVal(data[5]) ||
-                getIntVal(data[6]) == getIntVal(data[7]))
+//        if (getIntVal(data[2]) == getIntVal(data[3]) || getIntVal(data[4]) == getIntVal(data[5]) ||
+//                getIntVal(data[6]) == getIntVal(data[7]))
+//            return false;
+        if ((getIntVal(data[2]) != getIntVal(data[0]) || getIntVal(data[4]) != getIntVal(data[0]) || getIntVal(data[6]) != getIntVal(data[0])) &&
+                (getIntVal(data[3]) != getIntVal(data[1]) || getIntVal(data[5]) != getIntVal(data[1]) || getIntVal(data[7]) != getIntVal(data[1])))
             return false;
 
         return (getIntVal(data[2]) == firstX + 1 || getIntVal(data[3]) == firstY + 1 ||
@@ -118,20 +199,15 @@ public class Player {
     public boolean isEmptyPlace(String input) {
         String[] data = getDataFromShip(input);
 
-        return battleMap.getOnceShip(Integer.parseInt(data[0]), Integer.parseInt(data[1])) == null;
+        return battleMap.getOnceShip(getIntVal(data[0]), getIntVal(data[1])) == null;
     }
 
-    public void addDoubleDeckShip(String coordinates) {
-        String[] data = getDataFromShip(coordinates);
+    public boolean isEmptyDoublePlace(String input) {
+        String[] data = getDataFromShip(input);
 
-        if (DoubleDeckShip.getCounter() < 3) {
-            battleMap.setDoubleShip(Integer.parseInt(data[0]), Integer.parseInt(data[1]),
-                    Integer.parseInt(data[2]), Integer.parseInt(data[3]));
-        } else {
-            System.out.println("На поле максимальное количество двупалубных кораблей");
-        }
-        System.out.println("Valid " + isValidDoubleDeckShip(coordinates));
+        return battleMap.getOnceShip(getIntVal(data[0]), getIntVal(data[1])) == null && battleMap.getOnceShip(getIntVal(data[2]), getIntVal(data[3])) == null;
     }
+
 
     public void addThreeDeckShip(String coordinates) {
         String[] data = getDataFromShip(coordinates);

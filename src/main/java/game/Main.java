@@ -5,16 +5,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        BattleMap battleMap = new BattleMap();
-        Player player1 = new Player("Tom");
-        System.out.println("Hello " + player1.getName());
+        //BattleMap battleMap = new BattleMap();
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Sea Battle game. Enter name of first player: ");
+        Player player1 = new Player(scanner.nextLine());
+        System.out.println("Hello " + player1.getName());
         System.out.println("Enter coordinates of first SingleDesk ship:");
-        //player1.addSingleDeckShip(scanner.nextLine());
-        //player1.addSingleDeckShip(scanner.nextLine());
-        //player1.addDoubleDeckShip(scanner.nextLine());
+        player1.addSingleDeckShip(scanner.nextLine(), scanner);
+        //player1.addSingleDeckShip(scanner.nextLine(), scanner);
+        player1.addDoubleDeckShip(scanner.nextLine(), scanner);
         //player1.addThreeDeckShip(scanner.nextLine());
-        player1.addFourDeckShip(scanner.nextLine());
+        //player1.addFourDeckShip(scanner.nextLine());
         //player1.addSingleDeckShip(2,2);
        // player1.addSingleDeckShip(3,3);
        // player1.addSingleDeckShip(1,1);
