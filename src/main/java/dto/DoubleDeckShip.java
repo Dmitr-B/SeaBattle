@@ -2,6 +2,7 @@ package dto;
 
 public class DoubleDeckShip extends Ship{
     private static int counter = 0;
+    private int counterSingleDeckShip = 0;
 
     public DoubleDeckShip() {
 
@@ -11,6 +12,10 @@ public class DoubleDeckShip extends Ship{
 
     public static int getCounter() {
         return counter;
+    }
+
+    public int getCounterSingleDeckShip() {
+        return counterSingleDeckShip;
     }
 
     @Override

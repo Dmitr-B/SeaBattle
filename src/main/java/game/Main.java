@@ -13,9 +13,9 @@ public class Main {
         System.out.println("Enter coordinates of first SingleDesk ship:");
         player1.addSingleDeckShip(scanner.nextLine(), scanner);
         //player1.addSingleDeckShip(scanner.nextLine(), scanner);
-        player1.addDoubleDeckShip(scanner.nextLine(), scanner);
-        //player1.addThreeDeckShip(scanner.nextLine());
-        //player1.addFourDeckShip(scanner.nextLine());
+        //player1.addDoubleDeckShip(scanner.nextLine(), scanner);
+        //player1.addThreeDeckShip(scanner.nextLine(), scanner);
+        player1.addFourDeckShip(scanner.nextLine(), scanner);
         //player1.addSingleDeckShip(2,2);
        // player1.addSingleDeckShip(3,3);
        // player1.addSingleDeckShip(1,1);
