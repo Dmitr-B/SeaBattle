@@ -10,18 +10,7 @@ public class BattleMap {
         shipsOnMap = new Ship[10][10];
     }
 
-//    public void addSingleDeckShip(int x, int y) {
-//
-//        if (SingleDeckShip.getCounter() < 4) {
-//            shipsOnMap[x][y] = new SingleDeckShip();
-//        } else {
-//            System.out.println("На поле максимальное количество однопалубных кораблей");
-//        }
-//    }
 
-//    public Ship[][] getShipsOnMap() {
-//        return shipsOnMap;
-//    }
 
     public void setOnceShip(int x, int y) {
         shipsOnMap[x][y] = new SingleDeckShip();
