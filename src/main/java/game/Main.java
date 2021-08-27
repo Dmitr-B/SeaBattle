@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         //BattleMap battleMap = new BattleMap();
-        //comment for commit
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Sea Battle game. Enter name of first player: ");
         Player player1 = new Player(scanner.nextLine());
