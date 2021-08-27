@@ -1,8 +1,6 @@
 package game;
 
-import dto.Area;
-import dto.Ship;
-import dto.SingleDeckShip;
+import dto.*;
 
 public class BattleMap {
     private Ship[][] shipsOnMap;
@@ -31,21 +29,36 @@ public class BattleMap {
     }
 
     public void setDoubleShip(int x, int y, int x1, int y1) {
-        setOnceShip(x,y);
-        setOnceShip(x1,y1);
+        shipsOnMap[x][y] = new DoubleDeckShip();
+        setArea(x,y);
+        shipsOnMap[x1][y1] = shipsOnMap[x][y];
+        setArea(x1,y1);
+        //setOnceShip(x,y);
+        //setOnceShip(x1,y1);
     }
 
     public void setThreeShip(int x, int y, int x1, int y1, int x2, int y2) {
-        setOnceShip(x, y);
-        setOnceShip(x1, y1);
-        setOnceShip(x2, y2);
+        shipsOnMap[x][y] = new ThreeDeckShip();
+        setArea(x,y);
+        shipsOnMap[x1][y1] = shipsOnMap[x][y];
+        setArea(x1,y1);
+        shipsOnMap[x2][y2] = shipsOnMap[x1][y1];
+        setArea(x2,y2);
+        //setOnceShip(x, y);
+        //setOnceShip(x1, y1);
+        //setOnceShip(x2, y2);
     }
 
     public void setFourShip(int x, int y, int x1, int y1, int x2, int y2, int x3, int y3) {
+        new FourDeckShip();
         setOnceShip(x, y);
         setOnceShip(x1, y1);
         setOnceShip(x2, y2);
         setOnceShip(x3, y3);
+    }
+
+    public void setOneShot(int x, int y) {
+        shipsOnMap[x][y] = new ShotOnShip();
     }
 
     private void setArea(int x, int y) {

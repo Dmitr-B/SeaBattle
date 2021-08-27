@@ -11,6 +11,7 @@ public class Player {
     private static int counterPlayer;
     private final String name;
     private final BattleMap battleMap;
+    private Ship[][] battleArea;
 
     public Player(String name) {
         this.name = name;
@@ -40,10 +41,14 @@ public class Player {
 
         if (SingleDeckShip.getCounter() < 4 && isValidInput(coordinates) && isValidNumberOfCoordinates(coordinates) && isEmptyPlace(coordinates)) {
             battleMap.setOnceShip(getIntVal(data[0]), getIntVal(data[1]));
+        } else {
+            System.out.println("На поле максимальное количество однопалубных кораблей");
         }
 
-        if (SingleDeckShip.getCounter() > 4)
-            System.out.println("На поле максимальное количество однопалубных кораблей");
+        System.out.println(getOnceShip(getIntVal(data[0]), getIntVal(data[1])).toString());
+
+//        if (SingleDeckShip.getCounter() > 4)
+//            System.out.println("На поле максимальное количество однопалубных кораблей");
 
     }
 
@@ -75,11 +80,13 @@ public class Player {
         isValidDoubleDeckShip(coordinates)) {
             battleMap.setDoubleShip(getIntVal(data[0]), getIntVal(data[1]),
                     getIntVal(data[2]), getIntVal(data[3]));
-        }
-
-        if (DoubleDeckShip.getCounter() > 3) {
+        } else {
             System.out.println("На поле максимальное количество двупалубных кораблей");
         }
+
+//        if (DoubleDeckShip.getCounter() > 3) {
+//            System.out.println("На поле максимальное количество двупалубных кораблей");
+//        }
     }
 
     public void addThreeDeckShip(String coordinates, Scanner scanner) {
@@ -110,11 +117,13 @@ public class Player {
         isValidThreeDeckShip(coordinates)) {
             battleMap.setThreeShip(getIntVal(data[0]), getIntVal(data[1]), getIntVal(data[2]), getIntVal(data[3]),
                     getIntVal(data[4]), getIntVal(data[5]));
-        }
-
-        if (ThreeDeckShip.getCounter() > 2) {
+        } else {
             System.out.println("На поле максимальное количество трехпалубных кораблей");
         }
+
+//        if (ThreeDeckShip.getCounter() > 2) {
+//            System.out.println("На поле максимальное количество трехпалубных кораблей");
+//        }
     }
 
     public void addFourDeckShip(String coordinates, Scanner scanner) {
@@ -145,11 +154,13 @@ public class Player {
         isValidFourDeckShip(coordinates)) {
             battleMap.setFourShip(getIntVal(data[0]), getIntVal(data[1]), getIntVal(data[2]), getIntVal(data[3]),
                     getIntVal(data[4]), getIntVal(data[5]), getIntVal(data[6]), getIntVal(data[7]));
-        }
-
-        if (FourDeckShip.getCounter() > 1) {
+        } else {
             System.out.println("На поле максимальное количество четырехпалубных кораблей");
         }
+
+//        if (FourDeckShip.getCounter() > 1) {
+//            System.out.println("На поле максимальное количество четырехпалубных кораблей");
+//        }
     }
 
 //    private boolean isValidInput(String input) {
@@ -172,6 +183,176 @@ public class Player {
 //        Matcher matcher = pattern.matcher(input);
 //        return matcher.find();
 //    }
+
+    public void shot(String coordinates) {
+        String[] data = coordinates.split(",");
+
+        switch (getOnceShip(getIntVal(data[0]), getIntVal(data[1])).toString()) {
+            case "Area":
+            case "ShotOnShip":
+            case "null":
+                System.out.println("Mimo");
+                break;
+            case "SingleDeckShip":
+                battleMap.setOneShot(getIntVal(data[0]), getIntVal(data[1]));
+                System.out.println("Potopil");
+                break;
+            case "DoubleDeckShip":
+            case "ThreeDeckShip":
+                shotToThreeDeckV2(getIntVal(data[0]), getIntVal(data[1]));
+                //shotToBigShip(getIntVal(data[0]), getIntVal(data[1]));
+                break;
+
+        }
+    }
+
+    private void shotToBigShip(int x, int y) {
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+                case 0:
+                    if (x+1 < 9)
+                        if (battleMap.getOnceShip(x+1,y).toString().equals("DoubleDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x+1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 1:
+                    if (x-1 >= 0)
+                        if (battleMap.getOnceShip(x-1,y).toString().equals("DoubleDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x-1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 2:
+                    if (y+1 >= 0)
+                        if (battleMap.getOnceShip(x,y+1).toString().equals("DoubleDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y+1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 3:
+                    if (y-1 < 9)
+                        if (battleMap.getOnceShip(x,y-1).toString().equals("DoubleDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y-1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                default:
+                    System.out.println("Mimo");
+            }
+        }
+    }
+
+    private void shotToThreeDeck(int x, int y) {
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+                case 0:
+                    if (x+1 < 9)
+                        if (battleMap.getOnceShip(x+1,y).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x+1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 1:
+                    if (x-1 >= 0)
+                        if (battleMap.getOnceShip(x-1,y).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x-1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 2:
+                    if (y+1 >= 0)
+                        if (battleMap.getOnceShip(x,y+1).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y+1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                case 3:
+                    if (y-1 < 9)
+                        if (battleMap.getOnceShip(x,y-1).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y-1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+                    break;
+                default:
+                    if (battleMap.getOnceShip(x,y).toString().equals("ThreeDeckShip")) {
+                        battleMap.setOneShot(x, y);
+                        System.out.println("Popal");
+                    } else {
+                        System.out.println("Mimo");
+                    }
+            }
+        }
+    }
+
+    private void shotToThreeDeckV2(int x, int y) {
+                    if (x+1 < 9)
+                        if (battleMap.getOnceShip(x+1,y).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x+1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+
+                    if (x-1 >= 0)
+                        if (battleMap.getOnceShip(x-1,y).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x-1,y).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+
+                    if (y+1 >= 0)
+                        if (battleMap.getOnceShip(x,y+1).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y+1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+
+                    if (y-1 < 9)
+                        if (battleMap.getOnceShip(x,y-1).toString().equals("ThreeDeckShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Popal");
+                        } else if (battleMap.getOnceShip(x,y-1).toString().equals("ShotOnShip")) {
+                            battleMap.setOneShot(x, y);
+                            System.out.println("Potopil");
+                        }
+
+                    if (battleMap.getOnceShip(x,y).toString().equals("ThreeDeckShip")) {
+                        battleMap.setOneShot(x, y);
+                        System.out.println("Popal");
+                    } else {
+                        System.out.println("Mimo");
+                    }
+            }
 
     private boolean isValidInput(String input) {
         String patternRegex = "^[0-9],+[0-9]";
@@ -216,15 +397,18 @@ public class Player {
 
     private boolean isValidDoubleDeckShip(String input) {
         String[] data = getDataFromShip(input);
-        int firstX = Integer.parseInt(data[0]);
-        int firstY = Integer.parseInt(data[1]);
+        int firstX = getIntVal(data[0]);
+        int firstY = getIntVal(data[1]);
+
+        if (data.length < 4)
+            return false;
 
         if ((getIntVal(data[2]) != getIntVal(data[0]))  &&
                 (getIntVal(data[3]) != getIntVal(data[1])))
             return false;
 
-        return Integer.parseInt(data[2]) == firstX + 1 || Integer.parseInt(data[3]) == firstY + 1 ||
-                Integer.parseInt(data[2]) == firstX - 1 || Integer.parseInt(data[3]) == firstY - 1;
+        return getIntVal(data[2]) == firstX + 1 || getIntVal(data[3]) == firstY + 1 ||
+                getIntVal(data[2]) == firstX - 1 || getIntVal(data[3]) == firstY - 1;
     }
 
     private boolean isValidThreeDeckShip(String input) {
@@ -233,8 +417,10 @@ public class Player {
         int firstY = Integer.parseInt(data[1]);
 
         if ((getIntVal(data[2]) != getIntVal(data[0]) || getIntVal(data[4]) != getIntVal(data[0]))  &&
-                (getIntVal(data[3]) != getIntVal(data[1]) || getIntVal(data[5]) != getIntVal(data[1])))
+                (getIntVal(data[3]) != getIntVal(data[1]) || getIntVal(data[5]) != getIntVal(data[1]))) {
             return false;
+        }
+
 
         return (getIntVal(data[2]) == firstX + 1 || getIntVal(data[3]) == firstY + 1 ||
                 getIntVal(data[2]) == firstX - 1 || getIntVal(data[3]) == firstY - 1) &&

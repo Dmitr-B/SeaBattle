@@ -6,8 +6,14 @@ public class DoubleDeckShip extends Ship{
 
     public DoubleDeckShip() {
 
-        if (counter < 3)
+        if (counter < 3) {
+            counterSingleDeckShip = 2;
             counter++;
+        }
+    }
+
+    public void setCounterSingleDeckShip(int counterSingleDeckShip) {
+        this.counterSingleDeckShip = counterSingleDeckShip;
     }
 
     public static int getCounter() {
